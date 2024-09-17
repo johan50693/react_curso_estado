@@ -27,7 +27,7 @@ export const UseState = ({name}) => {
             )
         }
 
-{
+        {
             loading && (
                 <p> Cargando...</p>
             )
