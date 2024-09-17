@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from 'react'
 
+
+const SECURITY_CODE= 'HKA';
+
 export const UseState = ({name}) => {
-  const [error, setError] = useState(true)
+    const [value, setValue] = useState("")
+  const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+  console.log(value);
 
   useEffect(() => {
     console.log("cargando...")
     if(loading){
         setTimeout(() => {
+
+            if(value !== SECURITY_CODE){
+                setError(true);
+            }else{
+                setError(false);
+            }
+
             setLoading(false);
         }, 3000);
     }
@@ -32,7 +43,14 @@ export const UseState = ({name}) => {
                 <p> Cargando...</p>
             )
         }
-        <input placeholder='Codigo de seguridad' />
+        <input
+            value={value} 
+            placeholder='Codigo de seguridad' 
+            onChange={ event => {
+                setError(false);
+                setValue(event.target.value);
+            }}
+        />
         <button
             onClick={ () => setLoading(true)}
         >
