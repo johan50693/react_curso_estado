@@ -1,6 +1,7 @@
 import React from 'react'
 import { Loading } from './Loading';
 
+const SECURITY_CODE= 'HKA';
 
 class ClassState extends React.Component {
 
@@ -8,6 +9,7 @@ class ClassState extends React.Component {
         super(props);
 
         this.state = {
+            value: '',
             error: false,
             loading: false,
         }
@@ -17,7 +19,11 @@ class ClassState extends React.Component {
         if(this.state.loading){
 
             setTimeout(() => {
-                this.setState({loading: false});
+                if(SECURITY_CODE === this.state.value){
+                    this.setState({loading: false, error: false})
+                }else{
+                    this.setState({loading: false, error: true})
+                }
             }, 3000);
         }
     }
@@ -31,7 +37,7 @@ class ClassState extends React.Component {
                 </p>
 
                 {
-                    this.state.error && (
+                    (this.state.error && !this.state.loading) && (
                         <p> Error: El código es incorrecto</p>
                     )
                 }
@@ -41,7 +47,13 @@ class ClassState extends React.Component {
                         <Loading />
                     )
                 }
-                <input placeholder='Codigo de seguridad' />
+                <input 
+                    placeholder='Codigo de seguridad' 
+                    value={this.state.value}
+                    onChange={(event) => {
+                        this.setState({value: event.target.value});
+                    }}
+                    />
                 <button
                     onClick={ () => this.setState({loading: true})}
                 >
