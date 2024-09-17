@@ -4,26 +4,35 @@ import React, { useEffect, useState } from 'react'
 const SECURITY_CODE= 'HKA';
 
 export const UseState = ({name}) => {
-    const [value, setValue] = useState("")
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
-  console.log(value);
+  const [state, setState] = useState({
+    value: '',
+    error: false,
+    loading: false
+  })
+  
+  console.log(state);
 
   useEffect(() => {
     console.log("cargando...")
-    if(loading){
+    if(state.loading){
         setTimeout(() => {
-
-            if(value !== SECURITY_CODE){
-                setError(true);
+            if(state.value !== SECURITY_CODE){
+                setState({
+                    ...state,
+                    error: true,
+                    loading: false,
+                });
             }else{
-                setError(false);
+                setState({
+                    ...state,
+                    error: false,
+                    loading: false,
+                });
             }
 
-            setLoading(false);
         }, 3000);
     }
-  }, [loading])
+  }, [state.loading])
   
     return (
     <div>
@@ -33,26 +42,29 @@ export const UseState = ({name}) => {
         </p>
 
         {
-            error && (
+            state.error && (
                 <p> Error: El código es incorrecto</p>
             )
         }
 
         {
-            loading && (
+            state.loading && (
                 <p> Cargando...</p>
             )
         }
         <input
-            value={value} 
+            value={state.value} 
             placeholder='Codigo de seguridad' 
             onChange={ event => {
-                setError(false);
-                setValue(event.target.value);
+                setState({
+                    ...state,
+                    error: false,
+                    value: event.target.value
+                });
             }}
         />
         <button
-            onClick={ () => setLoading(true)}
+            onClick={ () => setState({...state, loading: true})}
         >
             Comprobar
         </button>
