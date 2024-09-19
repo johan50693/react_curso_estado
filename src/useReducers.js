@@ -1,5 +1,4 @@
-import { type } from '@testing-library/user-event/dist/type';
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 
 
 const SECURITY_CODE= 'HKA';
@@ -14,19 +13,22 @@ const initialState = {
 
 export const UseReducer = ({name}) => {
     const [state, dispatch] = useReducer(reducerSWITCH,initialState)
-    
-    console.log(state);
+
+    const onConfirmed = () => dispatch({type: actionsTypes.confirm})
+    const onError = () => dispatch({type: actionsTypes.error})
+    const onAddCode = (event) => dispatch({type: actionsTypes.addCode, payload: event.target.value})
+    const onCheck = () => dispatch({type: actionsTypes.check})
+    const onBack = () => dispatch({type: actionsTypes.back})
+    const onDelete = () => dispatch({type: actionsTypes.delete}) 
   
     useEffect(() => {
       console.log("cargando...")
       if(state.loading){
           setTimeout(() => {
               if(state.value !== SECURITY_CODE){
-                //   onError();
-                dispatch({type: 'ERROR'});
+                  onError();
               }else{
-                //   onConfirmed()
-                dispatch({type: 'CONFIRM'});
+                  onConfirmed()
               }
   
           }, 3000);
@@ -55,13 +57,10 @@ export const UseReducer = ({name}) => {
               <input
                   value={state.value} 
                   placeholder='Codigo de seguridad' 
-                  onChange={ event => {
-                    //   onAddCode(event.target.value);
-                    dispatch({type: 'ADDCODE', payload: event.target.value});
-                  }}
+                  onChange={onAddCode}
               />
               <button
-                  onClick={ () => dispatch({type: 'CHECK'})}
+                  onClick={onCheck}
               >
                   Comprobar
               </button>
@@ -72,18 +71,12 @@ export const UseReducer = ({name}) => {
           <>
               <p>¿Estas seguro que quieres eliminar el estado?</p>
               <button
-                  onClick={()=>{
-                    //   onBack();
-                    dispatch({type: 'BACK'});
-                  }}
+                  onClick={onBack}
               >
                   No, Regresar
               </button>
               <button
-                  onClick={()=>{
-                    //   onDelete();
-                    dispatch({type: 'DELETE'});
-                  }}
+                  onClick={onDelete}
               >
                   Si, Eliminalo
               </button>
@@ -94,10 +87,7 @@ export const UseReducer = ({name}) => {
           <>
               <p>Eliminado con exito</p>
               <button
-                  onClick={()=>{
-                    //   onBack();
-                    dispatch({type: 'BACK'});
-                  }}
+                  onClick={onBack}
               >
                   Resetear y regresar
               </button>
@@ -107,46 +97,53 @@ export const UseReducer = ({name}) => {
   
   }
   
-
+const actionsTypes = {
+    error: 'ERROR',
+    confirm: 'CONFIRM',
+    addCode: 'ADDCODE',
+    check: 'CHECK',
+    back: 'BACK',
+    delete: 'DELETE',
+}
 
  const reducerSWITCH = (state, action) => {
     switch (action.type) {
-        case 'ERROR':
+        case actionsTypes.error:
             return {
                 ...state,
                 error: true,
                 loading: false,
             };
-        case 'CONFIRM':
+        case actionsTypes.confirm:
             return {
                 ...state,
                 error: false,
                 loading: false,
                 confirmed: true
             };
-        case 'ADDCODE':
+        case actionsTypes.addCode:
             return {
                 ...state,
                 error: false,
                 value: action.payload
-            }
-        case 'CHECK':
+            };
+        case actionsTypes.check:
             return {
                 ...state, 
                 loading: true
-            } 
-        case 'BACK':
+            }; 
+        case actionsTypes.back:
             return {
                 ...state,
                 deleted: false,
                 confirmed: false,
                 value: ''
-            }
-        case 'DELETE':
+            };
+        case actionsTypes.delete:
             return {
                 ...state,
                 deleted: true,
-            }
+            };
         default:
             return {
                 ...state,
