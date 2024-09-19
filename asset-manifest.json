@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react_curso_estado/static/css/main.f855e6bc.css",
+    "main.js": "/react_curso_estado/static/js/main.48cc5ff4.js",
+    "index.html": "/react_curso_estado/index.html",
+    "main.f855e6bc.css.map": "/react_curso_estado/static/css/main.f855e6bc.css.map",
+    "main.48cc5ff4.js.map": "/react_curso_estado/static/js/main.48cc5ff4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.48cc5ff4.js"
+  ]
+}
